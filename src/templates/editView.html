@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block head_title %}Edit Post | {{block.super}}{% endblock head_title %}
+
+{% block editPost %}
+<div class="EditPost col-md-6 col-md-offset-4">
+    <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <strong>Title:</strong></br>
+        {{ editPostForm.title }}</br>
+        <strong>Content:</strong></br>
+        {{ editPostForm.content }}</br>
+
+        Draft: {{editPostForm.draft}}</br>
+        Publish Date: {{editPostForm.publishDate}}</br>
+
+        {{editPostForm.image}} </br>
+
+        <input type="submit" class="btn btn-primary" value="Save Edits">
+    </form>
+</div>
+{% endblock editPost %}

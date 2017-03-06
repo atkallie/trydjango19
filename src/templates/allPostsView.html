@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block head_title %}All Posts | {{block.super}}{% endblock head_title %}
+
+{% block allPosts %}
+    <div class="jumbotron text-center">
+        <h1>All Posts</h1>
+        <p>Stretch your brain. Expose your mind to other people's thoughts.</p>
+        <p><a class="btn btn-primary btn-lg" href="{{ createPostURL }}" role="button">Create a Post</a></p>
+        <h3>OR</h3>
+        <form method="GET" action="">
+            <div class="input-group-lg">
+                <input class="form-control text-center" type="text" name="search" placeholder="Search for posts..." value="{{request.GET.search}}"></br>
+            </div>
+            <input class="btn btn-info btn-lg" type="submit" value="Search">
+        </form>
+    </div>
+
+    <div class="row">
+    {% for obj in allPostObjs %}
+          <div class="col-sm-6">
+            <div class="thumbnail">
+                {% if obj.image %}
+                    <img src="{{ obj.image.url }}" class="img-responsive"></br>
+                {% endif %}
+              <div class="caption">
+                <h3><a href="{{obj.get_absolute_url}}">{{obj.title}}</a></h3>
+                  {{obj.created|timesince}}
+                <p>
+                    {{ obj.content|linebreaks|truncatechars:120 }}
+                </p>
+                <p><a href="{{obj.get_absolute_url}}" class="btn btn-primary" role="button">View</a> <a href="{{obj.get_absolute_url}}edit" class="btn btn-default" role="button">Edit</a></p>
+              </div>
+            </div>
+          </div>
+        <!-- this 'cycle' tag allows you to execute code every 'n' cycles (n=2 in this case) -->
+        {% cycle "" "</div><div class='row'>" %}
+    {% endfor %}
+    </div>
+
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if allPostObjs.has_previous %}
+                <a href="?page={{allPostObjs.previous_page_number}}&search={{request.GET.search}}" class="btn btn-primary btn-sm">Previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ allPostObjs.number }} of {{ allPostObjs.paginator.num_pages }}.
+            </span>
+
+            {% if allPostObjs.has_next %}
+                <a href="?page={{allPostObjs.next_page_number}}&search={{request.GET.search}}" class="btn btn-primary btn-sm">Next</a>
+            {% endif %}
+        </span>
+    </div>
+
+{% endblock allPosts %}

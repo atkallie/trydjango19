@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block head_title %}Create New Post | {{block.super}}{% endblock head_title %}
+
+
+<!-- {{postForm.as_p}} would render the form as a paragraph -->
+
+<!-- Create an html form using the Model Form passed via the context -->
+<!-- Default HTTP request method for a form is 'GET'...we need 'POST' -->
+<!-- Action is the URL to be sent to after the form is submitted...empty to stay on page -->
+
+{% block form %}
+<div class="CreatePostForm col-md-6 col-md-offset-4">
+    <form method="POST" action="" enctype="multipart/form-data">
+        <!-- CSRF middleware and template tag provides easy-to-use protection against certain types of malicious attacks -->
+        {% csrf_token %}
+
+        <strong>Title:</strong></br>
+        {{postForm.title}}</br>
+        <strong>Content:</strong></br>
+        {{postForm.content}}</br>
+
+        Draft: {{postForm.draft}}</br>
+        Publish Date: {{postForm.publishDate}}</br>
+
+        {{postForm.image}} </br>
+
+        <!-- Create a submit button -->
+        <input type="submit" class="btn btn-primary" value="Create New Post">
+    </form>
+</div>
+{% endblock form %}

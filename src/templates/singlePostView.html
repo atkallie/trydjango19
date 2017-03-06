@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load urlify %}
+
+{% block head_title %}Post #{{singleObj.id}} | {{block.super}} {% endblock head_title %}
+
+<!-- This block creates an unordered list of messages, if there are any -->
+
+{% block singlePost %}
+
+    <!-- 'linebreaks' makes it so that the line breaks entered in the form are displayed -->
+    <div class="col-md-6 col-md-offset-4">
+        <div class="text-center"><strong>{{ singleObj.title }}</strong></br></div>
+        <em>{{ singleObj.created }}</em></br>
+        {% if singleObj.image %}
+            <img src="{{ singleObj.image.url }}" class="img-responsive"></br>
+        {% endif %}
+        <!-- Display Author of Post -->
+        {% if singleObj.user.get_full_name  %}
+        <em><strong>By: </strong> {{ singleObj.user.get_full_name }} </em>
+        {% else %}
+        <em> Author: {{ singleObj.user }} </em>
+        {% endif %}
+
+        </hr>
+        </br>
+
+        <!-- Sharing Links -->
+        <!-- Facebook -->
+        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}">Facebook</a>
+        <!-- Twitter -->
+        <!-- shareString and urlify accomplish the same thing, but one is passed in context whereas the other is a custom template tag -->
+        <a href="https://twitter.com/home?status={{ singleObj.content|urlify }}%20{{ request.build_absolute_uri }}">Twitter</a>
+        <!-- Google Plus -->
+        <a href='https://plus.google.com/share?url={{ request.build_absolute_uri }}'>
+        <!-- LinkedIn -->
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}/&title={{ singleObj.title }}&summary={{ share_string }}&source={{ request.build_absolute_uri }}/">Linkedin</a>
+        <!-- Reddit -->
+        <a href="http://www.reddit.com/submit?url={{ request.build_absolute_uri }}/&title={{ singleObj.title }}">Reddit</a>
+        </br>
+
+        {{ singleObj.content|linebreaks }}</br>
+
+
+        </hr>
+        <div class="fb-like" data-href="{{ request.build_absolute_uri }}" data-layout="button_count" data-action="like" data-size="large" data-show-faces="true" data-share="true"></div> </br>
+        <div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-numposts="5"></div>
+    </div>
+{% endblock singlePost %}
